@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student API Interface</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #243b73;
+        }
+
+        h2 {
+            color: #243b73;
+            font-size: 20px;
+        }
+
+        .section {
+            margin-top: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #244db5;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #173783;
+        }
+
+        input {
+            padding: 10px;
+            width: 90%;
+            max-width: 300px;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background-color: #f0f2f5;
+            padding: 12px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .student-card {
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow-wrap: anywhere;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>Student API Interface</h1>
+        <p>Welcome! Test your Flask API using the buttons below.</p>
+
+        <!-- Student Information -->
+        <div class="section">
+            <h2>Student Information</h2>
+
+            <button onclick="getStudent()">
+                Get Student Information
+            </button>
+
+            <pre id="studentResult">Student information will appear here.</pre>
+        </div>
+
+        <!-- Say Hello -->
+        <div class="section">
+            <h2>Say Hello</h2>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+            >
+
+            <br>
+
+            <button onclick="sayHello()">
+                Send Greeting
+            </button>
+
+            <pre id="helloResult">Your greeting will appear here.</pre>
+        </div>
+
+        <!-- Attendance Information -->
+        <div class="section">
+            <h2>Attendance Information</h2>
+
+            <button onclick="getAttendance()">
+                Get Attendance
+            </button>
+
+            <pre id="attendanceResult">Attendance information will appear here.</pre>
+        </div>
+
+        <!-- Students from SQLite Database -->
+        <div class="section">
+            <h2>Students from Database</h2>
+
+            <button onclick="loadStudents()">
+                Load Students
+            </button>
+
+            <div id="studentList">
+                Student records will appear here.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Get Student Information
+        async function getStudent() {
+            const result = document.getElementById("studentResult");
+            result.textContent = "Loading...";
+
+            try {
+                const response = await fetch('/student');
+
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+
+                const data = await response.json();
+
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.textContent = "Could not load student information.";
+            }
+        }
+
+        // Say Hello
+        async function sayHello() {
+            const name = document.getElementById("name").value.trim();
+            const result = document.getElementById("helloResult");
+
+            result.textContent = "Loading...";
+
+            try {
+                const response = await fetch(
+                    '/hello?name=' + encodeURIComponent(name || 'Student')
+                );
+
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+
+                const data = await response.json();
+
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.textContent = "Could not send greeting.";
+            }
+        }
+
+        // Get Attendance Information
+        async function getAttendance() {
+            const result = document.getElementById("attendanceResult");
+            result.textContent = "Loading...";
+
+            try {
+                const response = await fetch('/attendance');
+
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+
+                const data = await response.json();
+
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.textContent = "Could not load attendance information.";
+            }
+        }
+
+        // Load All Students from SQLite Database
+        async function loadStudents() {
+            const result = document.getElementById("studentList");
+            result.textContent = "Loading students...";
+
+            try {
+                const response = await fetch('/students');
+
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    result.textContent = "No student records found.";
+                    return;
+                }
+
+                result.replaceChildren();
+
+                data.forEach(student => {
+                    const card = document.createElement("div");
+                    card.className = "student-card";
+
+                    const details = [
+                        ["Student ID", student.student_id],
+                        ["Name", student.name],
+                        ["Program", student.program],
+                        ["Year", student.year],
+                        ["Section", student.section]
+                    ];
+
+                    details.forEach(([label, value]) => {
+                        const line = document.createElement("div");
+                        line.textContent = label + ": " + value;
+                        card.appendChild(line);
+                    });
+
+                    result.appendChild(card);
+                });
+
+            } catch (error) {
+                result.textContent =
+                    "Unable to retrieve student records. Check your Flask API.";
+            }
+        }
+    </script>
+</body>
+</html>
