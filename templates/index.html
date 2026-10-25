@@ -4,40 +4,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Management Dashboard</title>
+  <title>Student Management System</title>
 
   <style>
     :root {
       --blue: #2563eb;
-      --blue-dark: #1d4ed8;
-      --blue-light: #eff6ff;
-      --sidebar: #172554;
-      --background: #f5f7fb;
+      --dark-blue: #172554;
+      --background: #f4f7fb;
       --white: #ffffff;
       --text: #172033;
-      --muted: #64748b;
+      --muted: #718096;
       --border: #e5eaf2;
-      --green: #15803d;
+      --green: #16a34a;
       --red: #dc2626;
-      --shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 24px;
+      scroll-padding-top: 20px;
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
       background: var(--background);
       color: var(--text);
-      line-height: 1.6;
     }
 
     button, input, select {
@@ -48,25 +43,26 @@
       cursor: pointer;
     }
 
+    .app {
+      display: grid;
+      grid-template-columns: 245px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
     .sidebar {
-      width: 250px;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      background: var(--sidebar);
+      background: linear-gradient(180deg, #172554, #1e40af);
       color: white;
-      padding: 26px 16px;
-      overflow-y: auto;
-      transition: transform 0.25s ease;
+      padding: 25px 17px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 0 10px 30px;
+      padding: 0 8px;
     }
 
     .brand-icon {
@@ -75,352 +71,285 @@
       display: grid;
       place-items: center;
       border-radius: 13px;
-      background: var(--blue);
+      background: #ffffff25;
       font-size: 22px;
-      font-weight: bold;
     }
 
     .brand h2 {
-      font-size: 17px;
-      line-height: 1.3;
+      font-size: 16px;
+      margin: 0 0 4px;
     }
 
     .brand p {
-      color: #b7c6e7;
-      font-size: 12px;
-      margin-top: 3px;
+      font-size: 11px;
+      color: #c7d2fe;
+      margin: 0;
     }
 
     .nav-label {
-      color: #94a9d2;
-      font-size: 11px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: #a5b4fc;
       font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      padding: 10px 12px;
+      padding: 0 12px;
+      margin-bottom: 10px;
     }
 
-    .nav-links {
-      display: flex;
-      flex-direction: column;
+    .nav {
+      display: grid;
       gap: 6px;
     }
 
-    .nav-links a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      color: #d5def1;
+    .nav a {
       text-decoration: none;
-      border-radius: 9px;
-      font-size: 14px;
-      transition: 0.2s;
+      color: #dbeafe;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      background: #263d70;
+    .nav a:hover,
+    .nav a.active {
+      background: #ffffff20;
       color: white;
     }
 
-    .nav-icon {
-      width: 23px;
-      text-align: center;
-      font-size: 17px;
-    }
-
     .sidebar-footer {
-      margin: 35px 5px 0;
-      padding: 16px 12px;
-      border-top: 1px solid #34456d;
-      color: #b7c6e7;
-      font-size: 12px;
+      margin-top: auto;
+      padding: 16px 8px 0;
+      border-top: 1px solid #ffffff25;
+      color: #c7d2fe;
+      font-size: 11px;
+      line-height: 1.7;
     }
 
-    .main {
-      margin-left: 250px;
-      min-height: 100vh;
+    main {
+      min-width: 0;
+      padding: 30px clamp(16px, 3vw, 40px);
     }
 
     .topbar {
-      min-height: 78px;
-      background: white;
-      border-bottom: 1px solid var(--border);
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       gap: 15px;
-      padding: 16px 32px;
-      position: sticky;
-      top: 0;
-      z-index: 500;
+      margin-bottom: 25px;
     }
 
-    .topbar h1 {
-      font-size: 22px;
-      line-height: 1.3;
+    .eyebrow {
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      margin-bottom: 7px;
     }
 
-    .topbar p {
-      color: var(--muted);
+    .page-title {
+      font-size: 30px;
+      margin: 0;
+    }
+
+    .subtitle {
       font-size: 13px;
-      margin-top: 4px;
+      color: var(--muted);
+      margin-top: 8px;
     }
 
     .profile {
       display: flex;
       align-items: center;
       gap: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      padding: 10px 13px;
+      border-radius: 13px;
     }
 
     .avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
-      background: #dbeafe;
-      color: var(--blue-dark);
+      border-radius: 11px;
+      color: white;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
       font-weight: bold;
     }
 
     .profile strong {
       display: block;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .profile small {
-      display: block;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 10px;
     }
 
-    .menu-toggle {
-      display: none;
-      border: 1px solid var(--border);
-      background: white;
-      border-radius: 8px;
-      padding: 8px 11px;
-      font-size: 20px;
-    }
-
-    .content {
-      padding: 30px 32px 45px;
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-
-    .welcome {
-      background: linear-gradient(120deg, #1d4ed8, #3b82f6);
-      color: white;
-      border-radius: 16px;
-      padding: 27px 30px;
-      margin-bottom: 26px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      overflow: hidden;
-    }
-
-    .welcome h2 {
-      font-size: 24px;
-      margin-bottom: 6px;
-    }
-
-    .welcome p {
-      color: #e3edff;
-      font-size: 14px;
-      max-width: 580px;
-    }
-
-    .welcome-mark {
-      font-size: 66px;
-      opacity: 0.25;
-      line-height: 1;
-    }
-
-    .section-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 30px 0 15px;
-    }
-
-    .section-heading h2 {
-      font-size: 18px;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 3px;
-    }
-
-    .stats-grid {
+    .stats {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-bottom: 25px;
+      gap: 17px;
+      margin-bottom: 20px;
     }
 
-    .stat-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 21px;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      min-width: 0;
-    }
-
-    .stat-icon {
-      width: 49px;
-      height: 49px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      font-size: 23px;
-      background: var(--blue-light);
-    }
-
-    .stat-card:nth-child(2) .stat-icon {
-      background: #dcfce7;
-    }
-
-    .stat-card:nth-child(3) .stat-icon {
-      background: #f3e8ff;
-    }
-
-    .stat-card p {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .stat-card h3 {
-      font-size: 26px;
-      margin-top: 2px;
-      line-height: 1.3;
-      overflow-wrap: anywhere;
-    }
-
+    .stat,
     .panel {
       background: white;
       border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 23px;
-      box-shadow: var(--shadow);
-      margin-bottom: 22px;
-      scroll-margin-top: 100px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px #1725540a;
+    }
+
+    .stat {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 27px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .stat-note {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 7px;
+    }
+
+    .stat-icon {
+      background: #eff6ff;
+      border-radius: 12px;
+      padding: 12px;
+      height: fit-content;
+      font-size: 20px;
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      padding: 22px;
+      margin-bottom: 20px;
       min-width: 0;
     }
 
-    .panel-title {
-      font-size: 17px;
-      margin-bottom: 5px;
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .panel-description {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 19px;
+    .panel h2 {
+      font-size: 16px;
+      margin: 0;
     }
 
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .quick-action {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 17px;
-      text-align: left;
-      transition: 0.2s;
-    }
-
-    .quick-action:hover {
-      border-color: #93b4ff;
-      background: #f8fbff;
-      transform: translateY(-2px);
-    }
-
-    .quick-action span {
-      font-size: 23px;
-      display: block;
-      margin-bottom: 9px;
-    }
-
-    .quick-action strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .quick-action small {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
+    .panel-desc {
       font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 6px 0 0;
     }
 
-    .form-grid {
+    .pill {
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 6px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .info-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 12px;
+    }
+
+    .info-item {
+      border: 1px solid var(--border);
+      padding: 13px;
+      border-radius: 11px;
+      min-width: 0;
+    }
+
+    .info-item span {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    .info-item strong {
+      font-size: 13px;
+      overflow-wrap: anywhere;
     }
 
     .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 0;
+      display: grid;
+      gap: 7px;
+      margin-bottom: 14px;
     }
 
     .field label {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: bold;
+      color: #475569;
     }
 
     .field input,
     .field select {
       width: 100%;
-      min-width: 0;
-      border: 1px solid #d7deea;
-      border-radius: 8px;
       padding: 11px 12px;
+      border: 1px solid #dce3ed;
+      border-radius: 10px;
       background: white;
       color: var(--text);
+      font-size: 12px;
       outline: none;
-      transition: border 0.2s, box-shadow 0.2s;
     }
 
     .field input:focus,
     .field select:focus {
-      border-color: var(--blue);
+      border-color: #60a5fa;
       box-shadow: 0 0 0 3px #dbeafe;
     }
 
-    .form-actions {
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 15px;
+    }
+
+    .button-row {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
-      margin-top: 18px;
+      gap: 9px;
+      margin-top: 12px;
     }
 
     .btn {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 15px;
-      font-size: 13px;
+      border: none;
+      border-radius: 9px;
+      padding: 10px 14px;
+      font-size: 12px;
       font-weight: bold;
-      transition: 0.2s;
     }
 
     .btn-primary {
@@ -429,16 +358,12 @@
     }
 
     .btn-primary:hover {
-      background: var(--blue-dark);
+      background: #1d4ed8;
     }
 
-    .btn-secondary {
-      background: #eef2f7;
-      color: #334155;
-    }
-
-    .btn-secondary:hover {
-      background: #e2e8f0;
+    .btn-light {
+      background: #eef2ff;
+      color: #3730a3;
     }
 
     .btn-danger {
@@ -446,108 +371,68 @@
       color: #b91c1c;
     }
 
-    .btn-danger:hover {
-      background: #fecaca;
-    }
-
     .btn-small {
-      padding: 6px 9px;
-      font-size: 12px;
-      margin: 2px;
+      padding: 7px 9px;
+      font-size: 11px;
     }
 
-    .message {
-      display: none;
-      padding: 11px 13px;
-      border-radius: 8px;
-      margin-top: 14px;
-      font-size: 13px;
-      overflow-wrap: anywhere;
-    }
-
-    .message.success {
-      display: block;
-      color: #166534;
-      background: #dcfce7;
-    }
-
-    .message.error {
-      display: block;
-      color: #991b1b;
-      background: #fee2e2;
+    .btn:disabled {
+      opacity: .6;
+      cursor: wait;
     }
 
     .result-box {
-      margin-top: 15px;
       background: #f8fafc;
       border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 15px;
-      min-height: 45px;
-      overflow-x: auto;
-    }
-
-    .result-box pre {
-      white-space: pre-wrap;
+      border-radius: 10px;
+      padding: 13px;
+      margin-top: 14px;
+      font-size: 12px;
+      line-height: 1.6;
       overflow-wrap: anywhere;
-      font-size: 13px;
-      font-family: Consolas, Monaco, monospace;
     }
 
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 15px;
+    .message {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
-    .toolbar input {
-      flex: 1;
-      min-width: 180px;
-      max-width: 360px;
-      padding: 10px 12px;
-      border: 1px solid #d7deea;
-      border-radius: 8px;
-      outline: none;
+    .success {
+      color: var(--green);
     }
 
-    .toolbar input:focus {
-      border-color: var(--blue);
+    .error {
+      color: var(--red);
     }
 
     .table-wrap {
       width: 100%;
       overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 9px;
     }
 
     table {
+      border-collapse: collapse;
       width: 100%;
       min-width: 650px;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    thead {
-      background: #f8fafc;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 13px 14px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
     }
 
     th {
-      color: #475569;
-      font-size: 11px;
+      background: #f8fafc;
+      color: #64748b;
+      text-align: left;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
-      white-space: nowrap;
+      letter-spacing: .5px;
+      padding: 13px 11px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 13px 11px;
+      font-size: 12px;
+      border-bottom: 1px solid #edf0f5;
+      vertical-align: middle;
     }
 
     tbody tr:last-child td {
@@ -555,884 +440,867 @@
     }
 
     tbody tr:hover {
-      background: #f8fbff;
+      background: #fbfdff;
     }
 
-    .empty-cell {
-      color: var(--muted);
-      text-align: center;
-      padding: 28px 12px;
+    .student-cell {
+      display: flex;
+      align-items: center;
+      gap: 9px;
     }
 
-    .pill {
-      display: inline-block;
+    .mini-avatar {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
       background: #dbeafe;
       color: #1d4ed8;
-      border-radius: 20px;
-      padding: 4px 9px;
-      font-size: 11px;
+      border-radius: 9px;
       font-weight: bold;
     }
 
-    .muted {
+    .student-name {
+      font-weight: bold;
+    }
+
+    .section-tag {
+      background: #f1f5f9;
+      border-radius: 7px;
+      padding: 5px 8px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .empty {
+      text-align: center;
       color: var(--muted);
+      padding: 25px;
     }
 
     .footer {
-      color: var(--muted);
-      font-size: 12px;
       text-align: center;
-      padding: 10px 0 0;
+      color: #94a3b8;
+      font-size: 11px;
+      padding: 10px 0;
     }
 
-    .sidebar-overlay {
-      display: none;
+    @media (max-width: 1000px) {
+      .app {
+        grid-template-columns: 200px minmax(0, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .two-columns {
+        grid-template-columns: 1fr;
+      }
     }
 
-    @media (max-width: 1050px) {
-      .sidebar {
-        transform: translateX(-100%);
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .main {
-        margin-left: 0;
-      }
-
-      .menu-toggle {
-        display: inline-block;
-      }
-
-      .topbar {
-        padding: 15px 22px;
-      }
-
-      .content {
-        padding: 24px 22px 35px;
-      }
-
-      .sidebar-overlay.show {
+    @media (max-width: 650px) {
+      .app {
         display: block;
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 23, 42, 0.45);
-        z-index: 900;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
       }
 
-      .quick-grid {
-        grid-template-columns: 1fr;
+      .sidebar {
+        padding: 15px;
+        gap: 15px;
       }
 
-      .form-grid {
-        grid-template-columns: 1fr;
+      .nav {
+        display: flex;
+        overflow-x: auto;
       }
 
-      .welcome {
-        padding: 22px;
-      }
-
-      .welcome h2 {
-        font-size: 21px;
-      }
-
-      .welcome-mark {
+      .nav-label,
+      .sidebar-footer {
         display: none;
       }
 
-      .topbar {
-        padding: 13px 15px;
+      .nav a {
+        white-space: nowrap;
+        padding: 10px;
       }
 
-      .topbar h1 {
-        font-size: 18px;
+      main {
+        padding: 20px 13px;
       }
 
-      .profile .profile-text {
+      .profile {
         display: none;
       }
 
-      .content {
-        padding: 20px 14px 30px;
+      .page-title {
+        font-size: 26px;
+      }
+
+      .form-grid,
+      .info-grid {
+        grid-template-columns: 1fr;
       }
 
       .panel {
-        padding: 17px;
-      }
-
-      .section-heading {
-        align-items: flex-start;
+        padding: 16px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="app">
 
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar">
     <div class="brand">
-      <div class="brand-icon">S</div>
+      <div class="brand-icon">🎓</div>
       <div>
         <h2>Student Portal</h2>
         <p>Management System</p>
       </div>
     </div>
 
-    <div class="nav-label">Main Menu</div>
-    <nav class="nav-links">
-      <a href="#dashboard" class="active" onclick="closeSidebar()">
-        <span class="nav-icon">▦</span> Dashboard
-      </a>
-      <a href="#student-information" onclick="closeSidebar()">
-        <span class="nav-icon">♙</span> Student Information
-      </a>
-      <a href="#say-hello" onclick="closeSidebar()">
-        <span class="nav-icon">✉</span> Say Hello
-      </a>
-      <a href="#attendance" onclick="closeSidebar()">
-        <span class="nav-icon">✓</span> Attendance
-      </a>
-      <a href="#add-student" onclick="closeSidebar()">
-        <span class="nav-icon">＋</span> Add Student
-      </a>
-      <a href="#my-records" onclick="closeSidebar()">
-        <span class="nav-icon">▤</span> My Records
-      </a>
-      <a href="#classmate-records" onclick="closeSidebar()">
-        <span class="nav-icon">♧</span> Classmate Records
-      </a>
-    </nav>
+    <div>
+      <div class="nav-label">MAIN MENU</div>
+      <nav class="nav">
+        <a href="#dashboard" class="active">▦ Dashboard</a>
+        <a href="#student-info">♙ Student Information</a>
+        <a href="#api-tools">⚡ API Tools</a>
+        <a href="#add-student">＋ Add Student</a>
+        <a href="#my-records">☷ My Records</a>
+        <a href="#classmate-records">◎ Classmate Records</a>
+      </nav>
+    </div>
 
     <div class="sidebar-footer">
-      <strong>Student API Interface</strong>
-      <p>Flask-powered student records</p>
+      Student Management System<br>
+      Flask · SQLite · REST API
     </div>
   </aside>
 
-  <main class="main">
+  <main id="dashboard">
+
     <header class="topbar">
-      <div style="display:flex;align-items:center;gap:13px;">
-        <button class="menu-toggle" type="button" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
-        <div>
-          <h1>Dashboard</h1>
-          <p>Manage student information in one place.</p>
-        </div>
+      <div>
+        <div class="eyebrow">OVERVIEW</div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="subtitle">
+          Manage student information and explore your API tools.
+        </p>
       </div>
 
       <div class="profile">
         <div class="avatar">MA</div>
-        <div class="profile-text">
-          <strong>Student Administrator</strong>
-          <small>Student Management</small>
+        <div>
+          <strong>Mariel Alada</strong>
+          <small>BSIT · 3rd Year</small>
         </div>
       </div>
     </header>
 
-    <div class="content">
-      <section id="dashboard">
-        <div class="welcome">
-          <div>
-            <h2>Welcome to your dashboard!</h2>
-            <p>View student information, check attendance, manage records, and access your classmate's records using the tools below.</p>
-          </div>
-          <div class="welcome-mark">▦</div>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">♙</div>
-            <div>
-              <p>My Student Records</p>
-              <h3 id="totalStudents">—</h3>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon">✓</div>
-            <div>
-              <p>API Connection</p>
-              <h3 id="apiStatus" style="font-size:19px;">Not checked</h3>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon">▤</div>
-            <div>
-              <p>Classmate Records</p>
-              <h3 id="totalClassmates">—</h3>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-heading">
-          <div>
-            <h2>Quick Actions</h2>
-            <p>Choose a feature to get started.</p>
-          </div>
-        </div>
-
-        <div class="quick-grid">
-          <button class="quick-action" onclick="getStudent()">
-            <span>♙</span>
-            <strong>View Student Information</strong>
-            <small>Display your student details</small>
-          </button>
-
-          <button class="quick-action" onclick="getAttendance()">
-            <span>✓</span>
-            <strong>Check Attendance</strong>
-            <small>View attendance information</small>
-          </button>
-
-          <button class="quick-action" onclick="scrollToSection('add-student')">
-            <span>＋</span>
-            <strong>Add New Student</strong>
-            <small>Create a student record</small>
-          </button>
-        </div>
-      </section>
-
-      <section class="section-heading" id="tools-heading">
+    <section class="stats">
+      <div class="stat">
         <div>
-          <h2>API Tools</h2>
-          <p>Test your Flask endpoints.</p>
+          <div class="stat-label">My Student Records</div>
+          <div class="stat-value" id="totalStudents">0</div>
+          <div class="stat-note">Saved in your database</div>
         </div>
-      </section>
+        <div class="stat-icon">👥</div>
+      </div>
 
-      <section class="panel" id="student-information">
-        <h2 class="panel-title">Student Information</h2>
-        <p class="panel-description">Retrieve student information from the <code>/student</code> endpoint.</p>
-        <button class="btn btn-primary" onclick="getStudent()">Load Student Information</button>
-        <div class="result-box" id="studentResult">
-          <span class="muted">Student information will appear here.</span>
+      <div class="stat">
+        <div>
+          <div class="stat-label">Program</div>
+          <div class="stat-value">BSIT</div>
+          <div class="stat-note">Information Technology</div>
         </div>
-      </section>
+        <div class="stat-icon">💻</div>
+      </div>
 
-      <section class="panel" id="say-hello">
-        <h2 class="panel-title">Say Hello</h2>
-        <p class="panel-description">Enter a name to send a request to the <code>/hello</code> endpoint.</p>
+      <div class="stat">
+        <div>
+          <div class="stat-label">Attendance</div>
+          <div class="stat-value">95%</div>
+          <div class="stat-note">Sample attendance information</div>
+        </div>
+        <div class="stat-icon">✓</div>
+      </div>
+    </section>
+
+    <section class="two-columns">
+
+      <article class="panel" id="student-info">
+        <div class="panel-header">
+          <div>
+            <h2>Student Information</h2>
+            <p class="panel-desc">
+              View your sample student profile from the API.
+            </p>
+          </div>
+          <span class="pill">GET /student</span>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span>Student ID</span>
+            <strong id="profileId">2023-0001</strong>
+          </div>
+          <div class="info-item">
+            <span>Full Name</span>
+            <strong id="profileName">Mariel Alada</strong>
+          </div>
+          <div class="info-item">
+            <span>Program</span>
+            <strong id="profileProgram">BSIT</strong>
+          </div>
+          <div class="info-item">
+            <span>Year & Section</span>
+            <strong id="profileYear">3rd Year · A</strong>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-primary" onclick="loadProfile()">
+            Refresh Information
+          </button>
+        </div>
+        <div id="profileMessage" class="message"></div>
+      </article>
+
+      <article class="panel" id="api-tools">
+        <div class="panel-header">
+          <div>
+            <h2>API Tools</h2>
+            <p class="panel-desc">
+              Try the Hello and Attendance endpoints.
+            </p>
+          </div>
+          <span class="pill">REST API</span>
+        </div>
+
+        <div class="field">
+          <label for="helloName">Name for Say Hello</label>
+          <input id="helloName" type="text"
+                 placeholder="Enter a name" value="Mariel">
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-primary" onclick="sayHello()">
+            Say Hello
+          </button>
+          <button class="btn btn-light" onclick="loadAttendance()">
+            Check Attendance
+          </button>
+        </div>
+
+        <div class="result-box" id="apiResult">
+          Choose a button to see the API response.
+        </div>
+      </article>
+
+    </section>
+
+    <section class="panel" id="add-student">
+      <div class="panel-header">
+        <div>
+          <h2 id="formTitle">Add Student</h2>
+          <p class="panel-desc">
+            Complete all fields to save a student record.
+          </p>
+        </div>
+        <span class="pill">CREATE / UPDATE</span>
+      </div>
+
+      <form id="studentForm">
+        <!-- Database row ID for editing. -->
+        <input type="hidden" id="student_id">
 
         <div class="form-grid">
           <div class="field">
-            <label for="name">Name</label>
-            <input type="text" id="name" placeholder="Enter a name">
+            <label for="student_id_input">Student ID</label>
+            <input type="text" id="student_id_input"
+                   placeholder="e.g. 2023-0002" required>
+          </div>
+
+          <div class="field">
+            <label for="student_name">Student Name</label>
+            <input type="text" id="student_name"
+                   placeholder="Enter full name" required>
+          </div>
+
+          <div class="field">
+            <label for="program">Program</label>
+            <input type="text" id="program"
+                   placeholder="e.g. BSIT" required>
+          </div>
+
+          <div class="field">
+            <label for="year">Year Level</label>
+            <select id="year" required>
+              <option value="">Select year level</option>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+              <option value="5">5th Year</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="section">Section</label>
+            <input type="text" id="section"
+                   placeholder="e.g. A" required>
           </div>
         </div>
 
-        <div class="form-actions">
-          <button class="btn btn-primary" onclick="sayHello()">Send Greeting</button>
+        <div class="button-row">
+          <button type="submit" class="btn btn-primary" id="saveButton">
+            Save Student
+          </button>
+
+          <button type="button" class="btn btn-light"
+                  id="cancelButton" onclick="cancelEdit()"
+                  style="display:none">
+            Cancel Edit
+          </button>
         </div>
 
-        <div class="result-box" id="helloResult">
-          <span class="muted">Your greeting will appear here.</span>
+        <div id="formMessage" class="message"
+             role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="panel" id="my-records">
+      <div class="panel-header">
+        <div>
+          <h2>My Records</h2>
+          <p class="panel-desc">
+            View, edit, and delete your saved student records.
+          </p>
         </div>
-      </section>
-
-      <section class="panel" id="attendance">
-        <h2 class="panel-title">Attendance</h2>
-        <p class="panel-description">Retrieve your attendance details from the <code>/attendance</code> endpoint.</p>
-        <button class="btn btn-primary" onclick="getAttendance()">Check Attendance</button>
-        <div class="result-box" id="attendanceResult">
-          <span class="muted">Attendance information will appear here.</span>
-        </div>
-      </section>
-
-      <section class="panel" id="add-student">
-        <h2 class="panel-title" id="formTitle">Add New Student</h2>
-        <p class="panel-description">Fill in the fields below to create a student record or update an existing one.</p>
-
-        <form id="studentForm">
-          <input type="hidden" id="student_id">
-
-          <div class="form-grid">
-            <div class="field">
-              <label for="student_name">Student Name</label>
-              <input type="text" id="student_name" placeholder="Enter full name" required>
-            </div>
-
-            <div class="field">
-              <label for="program">Program</label>
-              <input type="text" id="program" placeholder="e.g. BSIT" required>
-            </div>
-
-            <div class="field">
-              <label for="year">Year Level</label>
-              <select id="year" required>
-                <option value="">Select year level</option>
-                <option value="1">1st Year</option>
-                <option value="2">2nd Year</option>
-                <option value="3">3rd Year</option>
-                <option value="4">4th Year</option>
-                <option value="5">5th Year</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="section">Section</label>
-              <input type="text" id="section" placeholder="e.g. A" required>
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button class="btn btn-primary" type="submit" id="saveButton">Save Student</button>
-            <button class="btn btn-secondary" type="button" id="cancelButton" onclick="cancelEdit()" style="display:none;">Cancel Edit</button>
-          </div>
-
-          <div class="message" id="formMessage" role="status"></div>
-        </form>
-      </section>
-
-      <section class="panel" id="my-records">
-        <div class="section-heading" style="margin-top:0;">
-          <div>
-            <h2>My Student Records</h2>
-            <p>Search, edit, or delete records stored in your database.</p>
-          </div>
-          <button class="btn btn-secondary" onclick="loadStudents()">↻ Refresh</button>
-        </div>
-
-        <div class="toolbar">
-          <input type="search" id="searchMyRecords" placeholder="Search by name, program, or section..." aria-label="Search my student records">
-          <span class="muted" id="myRecordsCount">0 records</span>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Student Name</th>
-                <th>Program</th>
-                <th>Year</th>
-                <th>Section</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="studentList">
-              <tr><td colspan="6" class="empty-cell">Loading student records...</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="message" id="myRecordsMessage" role="status"></div>
-      </section>
-
-      <section class="panel" id="classmate-records">
-        <div class="section-heading" style="margin-top:0;">
-          <div>
-            <h2>Classmate's Records</h2>
-            <p>Retrieve and view records from your classmate's API.</p>
-          </div>
-          <button class="btn btn-secondary" onclick="loadClassmateRecords()">↻ Refresh</button>
-        </div>
-
-        <div class="field" style="margin-bottom:14px;">
-          <label for="classmateAPI">Classmate API URL</label>
-          <input
-            type="url"
-            id="classmateAPI"
-            value="https://abordaje-jm.onrender.com/students"
-            placeholder="Enter classmate API URL"
-          >
-        </div>
-
-        <div class="form-actions" style="margin-top:0;margin-bottom:15px;">
-          <button class="btn btn-primary" onclick="loadClassmateRecords()">Load Classmate Records</button>
-        </div>
-
-        <div class="message" id="classmateMessage" role="status"></div>
-
-        <div class="toolbar" style="margin-top:15px;">
-          <input type="search" id="searchRemoteRecords" placeholder="Search classmate records..." aria-label="Search classmate records">
-          <span class="muted" id="remoteRecordsCount">0 records</span>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Student Name</th>
-                <th>Program</th>
-                <th>Year</th>
-                <th>Section</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="classmateList">
-              <tr><td colspan="6" class="empty-cell">Click "Load Classmate Records" to retrieve records.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="result-box" id="remoteDetails" style="display:none;">
-          <strong>Student Details</strong>
-          <pre></pre>
-        </div>
-      </section>
-
-      <div class="footer">
-        Student Management System · Flask API · Student Records Dashboard
+        <button class="btn btn-light" onclick="loadStudents()">
+          ↻ Refresh
+        </button>
       </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Student ID</th>
+              <th>Program</th>
+              <th>Year</th>
+              <th>Section</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTable">
+            <tr>
+              <td colspan="6" class="empty">Loading records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="recordsMessage" class="message"></div>
+    </section>
+
+    <section class="panel" id="classmate-records">
+      <div class="panel-header">
+        <div>
+          <h2>Classmate Records</h2>
+          <p class="panel-desc">
+            Fetch records from your classmate's deployed API.
+          </p>
+        </div>
+        <span class="pill">EXTERNAL API</span>
+      </div>
+
+      <div class="button-row" style="margin-top:0;margin-bottom:15px">
+        <button class="btn btn-primary"
+                onclick="loadClassmateStudents()">
+          Load Classmate Records
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Student ID</th>
+              <th>Program</th>
+              <th>Year</th>
+              <th>Section</th>
+            </tr>
+          </thead>
+          <tbody id="classmateTable">
+            <tr>
+              <td colspan="5" class="empty">
+                Click “Load Classmate Records” to fetch data.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="classmateMessage" class="message"></div>
+    </section>
+
+    <div class="footer">
+      Student Management System · Built with Flask and SQLite
     </div>
+
   </main>
+</div>
 
-  <script>
-    let myRecords = [];
-    let remoteRecords = [];
+<script>
+  const $ = id => document.getElementById(id);
 
-    function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("open");
-      document.getElementById("sidebarOverlay").classList.toggle("show");
-    }
-
-    function closeSidebar() {
-      document.getElementById("sidebar").classList.remove("open");
-      document.getElementById("sidebarOverlay").classList.remove("show");
-    }
-
-    function scrollToSection(id) {
-      document.getElementById(id).scrollIntoView({ behavior: "smooth" });
-      closeSidebar();
-    }
-
-    function showJSON(elementId, data) {
-      const element = document.getElementById(elementId);
-      element.replaceChildren();
-
-      const pre = document.createElement("pre");
-      pre.textContent = JSON.stringify(data, null, 2);
-      element.appendChild(pre);
-    }
-
-    function showMessage(elementId, message, type = "success") {
-      const element = document.getElementById(elementId);
-      element.textContent = message;
-      element.className = "message " + type;
-    }
-
-    async function requestJSON(url, options = {}) {
-      const response = await fetch(url, options);
-      const text = await response.text();
-      let data;
-
-      try {
-        data = text ? JSON.parse(text) : {};
-      } catch {
-        data = { message: text || "The server returned an empty response." };
-      }
-
-      if (!response.ok) {
-        throw new Error(data.message || data.error || `Request failed (${response.status})`);
-      }
-
-      return data;
-    }
-
-    function getValue(id) {
-      return document.getElementById(id).value.trim();
-    }
-
-    function getStudentId(student) {
-      return student.id ?? student.student_id ?? student.studentId ?? "";
-    }
-
-    function getStudentName(student) {
-      return student.student_name ?? student.name ?? student.full_name ?? student.fullName ?? "";
-    }
-
-    function getProgram(student) {
-      return student.program ?? student.course ?? "";
-    }
-
-    function getYear(student) {
-      return student.year ?? student.year_level ?? student.yearLevel ?? "";
-    }
-
-    function getSection(student) {
-      return student.section ?? "";
-    }
-
-    function normalizeRecords(data) {
-      if (Array.isArray(data)) return data;
-
-      if (data && Array.isArray(data.students)) return data.students;
-      if (data && Array.isArray(data.records)) return data.records;
-      if (data && Array.isArray(data.data)) return data.data;
-      if (data && Array.isArray(data.results)) return data.results;
-
-      if (data && typeof data === "object" &&
-          (data.id !== undefined || data.student_id !== undefined)) {
-        return [data];
-      }
-
-      return [];
-    }
-
-    function addCell(row, value) {
-      const cell = document.createElement("td");
-      cell.textContent = value === null || value === undefined || value === ""
-        ? "—"
-        : String(value);
-      row.appendChild(cell);
-      return cell;
-    }
-
-    function setAPIStatus(connected) {
-      const element = document.getElementById("apiStatus");
-      element.textContent = connected ? "Connected" : "Check connection";
-      element.style.color = connected ? "#15803d" : "#b45309";
-    }
-
-    async function getStudent() {
-      const box = document.getElementById("studentResult");
-      box.textContent = "Loading student information...";
-
-      try {
-        const data = await requestJSON("/student");
-        showJSON("studentResult", data);
-        setAPIStatus(true);
-      } catch (error) {
-        showJSON("studentResult", { error: error.message });
-        setAPIStatus(false);
-      }
-    }
-
-    async function sayHello() {
-      const name = getValue("name") || "Student";
-      const box = document.getElementById("helloResult");
-      box.textContent = "Sending greeting...";
-
-      try {
-        const data = await requestJSON("/hello?name=" + encodeURIComponent(name));
-        showJSON("helloResult", data);
-        setAPIStatus(true);
-      } catch (error) {
-        showJSON("helloResult", { error: error.message });
-        setAPIStatus(false);
-      }
-    }
-
-    async function getAttendance() {
-      const box = document.getElementById("attendanceResult");
-      box.textContent = "Loading attendance...";
-
-      try {
-        const data = await requestJSON("/attendance");
-        showJSON("attendanceResult", data);
-        setAPIStatus(true);
-      } catch (error) {
-        showJSON("attendanceResult", { error: error.message });
-        setAPIStatus(false);
-      }
-    }
-
-    document.getElementById("studentForm").addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const id = getValue("student_id");
-      const student = {
-        student_name: getValue("student_name"),
-        program: getValue("program"),
-        year: getValue("year"),
-        section: getValue("section")
-      };
-
-      const saveButton = document.getElementById("saveButton");
-      saveButton.disabled = true;
-      saveButton.textContent = id ? "Updating..." : "Saving...";
-
-      try {
-        const url = id
-          ? "/api/students/" + encodeURIComponent(id)
-          : "/api/students";
-
-        const method = id ? "PUT" : "POST";
-
-        const data = await requestJSON(url, {
-          method,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(student)
-        });
-
-        showMessage(
-          "formMessage",
-          data.message || (id ? "Student record updated successfully." : "Student added successfully."),
-          "success"
-        );
-
-        cancelEdit(false);
-        await loadStudents();
-      } catch (error) {
-        showMessage("formMessage", "Unable to save student: " + error.message, "error");
-      } finally {
-        saveButton.disabled = false;
-        saveButton.textContent = getValue("student_id") ? "Update Student" : "Save Student";
+  async function requestJSON(url, options = {}) {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
       }
     });
 
-    async function loadStudents() {
-      const tbody = document.getElementById("studentList");
-      tbody.innerHTML = '<tr><td colspan="6" class="empty-cell">Loading student records...</td></tr>';
+    let data = {};
 
-      try {
-        const data = await requestJSON("/api/students");
-        myRecords = normalizeRecords(data);
-        renderMyRecords();
-        document.getElementById("totalStudents").textContent = myRecords.length;
-        setAPIStatus(true);
-      } catch (error) {
-        tbody.innerHTML = "";
-        const row = document.createElement("tr");
-        const cell = row.insertCell();
-        cell.colSpan = 6;
-        cell.className = "empty-cell";
-        cell.textContent = "Could not load records: " + error.message;
-        tbody.appendChild(row);
-
-        document.getElementById("totalStudents").textContent = "—";
-        document.getElementById("myRecordsCount").textContent = "Unavailable";
-        setAPIStatus(false);
-      }
+    try {
+      data = await response.json();
+    } catch (error) {
+      data = {};
     }
 
-    function renderMyRecords() {
-      const tbody = document.getElementById("studentList");
-      const query = getValue("searchMyRecords").toLowerCase();
+    if (!response.ok) {
+      const missing = Array.isArray(data.fields)
+        ? " (missing: " + data.fields.join(", ") + ")"
+        : "";
 
-      const filtered = myRecords.filter(student => {
-        const searchable = [
-          getStudentId(student),
-          getStudentName(student),
-          getProgram(student),
-          getYear(student),
-          getSection(student)
-        ].join(" ").toLowerCase();
+      throw new Error(
+        (data.message || data.error ||
+        `Request failed (${response.status})`) + missing
+      );
+    }
 
-        return searchable.includes(query);
+    return data;
+  }
+
+  function setMessage(id, message, type = "") {
+    const element = $(id);
+    element.textContent = message || "";
+    element.className = "message" + (type ? " " + type : "");
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[character]);
+  }
+
+  function valueOrDash(value) {
+    return value === null || value === undefined || value === ""
+      ? "—"
+      : String(value);
+  }
+
+  function getDatabaseId(student) {
+    return student.id ?? student.database_id ?? "";
+  }
+
+  function getStudentCode(student) {
+    return student.student_id ?? student.studentId ?? "";
+  }
+
+  function getStudentName(student) {
+    return student.name ?? student.student_name ??
+      student.full_name ?? student.fullName ?? "";
+  }
+
+  function getProgram(student) {
+    return student.program ?? student.course ?? "";
+  }
+
+  function getYear(student) {
+    return student.year ?? student.year_level ??
+      student.yearLevel ?? "";
+  }
+
+  function getSection(student) {
+    return student.section ?? "";
+  }
+
+  function yearLabel(value) {
+    const labels = {
+      1: "1st Year",
+      2: "2nd Year",
+      3: "3rd Year",
+      4: "4th Year",
+      5: "5th Year"
+    };
+
+    return labels[Number(value)] || valueOrDash(value);
+  }
+
+  async function loadProfile() {
+    setMessage("profileMessage", "Loading...");
+
+    try {
+      const student = await requestJSON("/student");
+
+      $("profileId").textContent = valueOrDash(student.student_id);
+      $("profileName").textContent = valueOrDash(student.name);
+      $("profileProgram").textContent = valueOrDash(student.program);
+      $("profileYear").textContent =
+        `${yearLabel(student.year)} · ${valueOrDash(student.section)}`;
+
+      setMessage(
+        "profileMessage",
+        "Student information loaded successfully.",
+        "success"
+      );
+    } catch (error) {
+      setMessage("profileMessage", error.message, "error");
+    }
+  }
+
+  async function sayHello() {
+    const name = $("helloName").value.trim() || "Student";
+    $("apiResult").textContent = "Sending request...";
+
+    try {
+      const data = await requestJSON(
+        "/hello?name=" + encodeURIComponent(name)
+      );
+
+      $("apiResult").textContent = data.message || JSON.stringify(data);
+    } catch (error) {
+      $("apiResult").textContent = error.message;
+    }
+  }
+
+  async function loadAttendance() {
+    $("apiResult").textContent = "Loading attendance...";
+
+    try {
+      const data = await requestJSON("/attendance");
+
+      $("apiResult").textContent =
+        `${data.student_name}: ${data.attendance_status} · ` +
+        `Attendance: ${data.attendance_percentage}%`;
+    } catch (error) {
+      $("apiResult").textContent = error.message;
+    }
+  }
+
+  async function loadStudents() {
+    const table = $("studentsTable");
+
+    table.innerHTML =
+      '<tr><td colspan="6" class="empty">Loading records...</td></tr>';
+
+    try {
+      const students = await requestJSON("/api/students");
+
+      $("totalStudents").textContent = students.length;
+
+      if (!students.length) {
+        table.innerHTML =
+          '<tr><td colspan="6" class="empty">' +
+          'No student records yet. Add your first student above.' +
+          '</td></tr>';
+        return;
+      }
+
+      table.innerHTML = students.map(student => {
+        const dbId = Number(getDatabaseId(student));
+        const name = getStudentName(student);
+
+        return `
+          <tr>
+            <td>
+              <div class="student-cell">
+                <div class="mini-avatar">
+                  ${escapeHTML((name.trim()[0] || "?").toUpperCase())}
+                </div>
+                <div class="student-name">
+                  ${escapeHTML(valueOrDash(name))}
+                </div>
+              </div>
+            </td>
+            <td>${escapeHTML(valueOrDash(getStudentCode(student)))}</td>
+            <td>${escapeHTML(valueOrDash(getProgram(student)))}</td>
+            <td>${escapeHTML(yearLabel(getYear(student)))}</td>
+            <td>
+              <span class="section-tag">
+                ${escapeHTML(valueOrDash(getSection(student)))}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-light btn-small"
+                  onclick="editStudent(${dbId})">Edit</button>
+                <button class="btn btn-danger btn-small"
+                  onclick="deleteStudent(${dbId})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      setMessage("recordsMessage", "");
+    } catch (error) {
+      table.innerHTML =
+        `<tr><td colspan="6" class="empty">` +
+        `${escapeHTML(error.message)}</td></tr>`;
+
+      $("totalStudents").textContent = "—";
+    }
+  }
+
+  async function editStudent(databaseId) {
+    try {
+      const students = await requestJSON("/api/students");
+
+      const student = students.find(item =>
+        Number(getDatabaseId(item)) === Number(databaseId)
+      );
+
+      if (!student) {
+        throw new Error("Student record not found. Refresh and try again.");
+      }
+
+      // Keep database ID separate from the student's school ID.
+      $("student_id").value = getDatabaseId(student);
+      $("student_id_input").value = getStudentCode(student);
+      $("student_name").value = getStudentName(student);
+      $("program").value = getProgram(student);
+      $("year").value = String(getYear(student));
+      $("section").value = getSection(student);
+
+      $("formTitle").textContent = "Edit Student";
+      $("saveButton").textContent = "Update Student";
+      $("cancelButton").style.display = "inline-block";
+
+      setMessage("formMessage", "");
+
+      $("add-student").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
       });
 
-      tbody.replaceChildren();
-      document.getElementById("myRecordsCount").textContent =
-        `${filtered.length} record${filtered.length === 1 ? "" : "s"}`;
+      $("student_id_input").focus();
+    } catch (error) {
+      setMessage("recordsMessage", error.message, "error");
+    }
+  }
 
-      if (filtered.length === 0) {
-        const row = tbody.insertRow();
-        const cell = row.insertCell();
-        cell.colSpan = 6;
-        cell.className = "empty-cell";
-        cell.textContent = myRecords.length ? "No matching records found." : "No student records available.";
-        return;
-      }
+  function cancelEdit(clearMessage = true) {
+    $("studentForm").reset();
+    $("student_id").value = "";
 
-      filtered.forEach(student => {
-        const row = tbody.insertRow();
-        addCell(row, getStudentId(student));
-        addCell(row, getStudentName(student));
-        addCell(row, getProgram(student));
+    $("formTitle").textContent = "Add Student";
+    $("saveButton").textContent = "Save Student";
+    $("cancelButton").style.display = "none";
 
-        const yearCell = addCell(row, getYear(student));
-        if (yearCell.textContent !== "—") {
-          const pill = document.createElement("span");
-          pill.className = "pill";
-          pill.textContent = yearCell.textContent;
-          yearCell.replaceChildren(pill);
-        }
+    if (clearMessage) {
+      setMessage("formMessage", "");
+    }
+  }
 
-        addCell(row, getSection(student));
+  $("studentForm").addEventListener("submit", async event => {
+    event.preventDefault();
 
-        const actions = row.insertCell();
+    const databaseId = $("student_id").value.trim();
 
-        const editButton = document.createElement("button");
-        editButton.className = "btn btn-secondary btn-small";
-        editButton.textContent = "Edit";
-        editButton.onclick = () => editStudent(student);
-        actions.appendChild(editButton);
+    // These names must match the Flask backend.
+    const student = {
+      student_id: $("student_id_input").value.trim(),
+      name: $("student_name").value.trim(),
+      program: $("program").value.trim(),
+      year: $("year").value,
+      section: $("section").value.trim()
+    };
 
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "btn btn-danger btn-small";
-        deleteButton.textContent = "Delete";
-        deleteButton.onclick = () => deleteStudent(getStudentId(student));
-        actions.appendChild(deleteButton);
-      });
+    const missing = Object.entries(student)
+      .filter(([, value]) => value === "")
+      .map(([key]) => key);
+
+    if (missing.length) {
+      setMessage(
+        "formMessage",
+        "Please complete all fields: " + missing.join(", "),
+        "error"
+      );
+      return;
     }
 
-    document.getElementById("searchMyRecords").addEventListener("input", renderMyRecords);
+    const button = $("saveButton");
+    button.disabled = true;
+    button.textContent = "Saving...";
 
-    function editStudent(student) {
-      document.getElementById("student_id").value = getStudentId(student);
-      document.getElementById("student_name").value = getStudentName(student);
-      document.getElementById("program").value = getProgram(student);
-      document.getElementById("year").value = String(getYear(student));
-      document.getElementById("section").value = getSection(student);
+    setMessage("formMessage", "");
 
-      document.getElementById("formTitle").textContent = "Edit Student";
-      document.getElementById("saveButton").textContent = "Update Student";
-      document.getElementById("cancelButton").style.display = "inline-block";
+    try {
+      const url = databaseId
+        ? `/api/students/${encodeURIComponent(databaseId)}`
+        : "/api/students";
 
-      const message = document.getElementById("formMessage");
-      message.textContent = "";
-      message.className = "message";
-
-      scrollToSection("add-student");
-    }
-
-    function cancelEdit(clearMessage = true) {
-      document.getElementById("studentForm").reset();
-      document.getElementById("student_id").value = "";
-      document.getElementById("formTitle").textContent = "Add New Student";
-      document.getElementById("saveButton").textContent = "Save Student";
-      document.getElementById("cancelButton").style.display = "none";
-
-      if (clearMessage) {
-        const message = document.getElementById("formMessage");
-        message.textContent = "";
-        message.className = "message";
-      }
-    }
-
-    async function deleteStudent(id) {
-      if (id === "" || id === null || id === undefined) {
-        showMessage("myRecordsMessage", "This record has no ID, so it cannot be deleted.", "error");
-        return;
-      }
-
-      if (!confirm("Are you sure you want to delete this student record?")) {
-        return;
-      }
-
-      try {
-        const data = await requestJSON("/api/students/" + encodeURIComponent(id), {
-          method: "DELETE"
-        });
-
-        showMessage(
-          "myRecordsMessage",
-          data.message || "Student record deleted successfully.",
-          "success"
-        );
-
-        await loadStudents();
-      } catch (error) {
-        showMessage("myRecordsMessage", "Unable to delete record: " + error.message, "error");
-      }
-    }
-
-    async function loadClassmateRecords() {
-      const tbody = document.getElementById("classmateList");
-      const apiUrl = getValue("classmateAPI");
-
-      if (!apiUrl) {
-        showMessage("classmateMessage", "Please enter your classmate's API URL.", "error");
-        return;
-      }
-
-      tbody.innerHTML = '<tr><td colspan="6" class="empty-cell">Loading classmate records...</td></tr>';
-      showMessage("classmateMessage", "Connecting to classmate API...", "success");
-      document.getElementById("remoteDetails").style.display = "none";
-
-      try {
-        // This route should already exist in your Flask app.py.
-        const proxyUrl = "/api/classmate-students?url=" + encodeURIComponent(apiUrl);
-        const data = await requestJSON(proxyUrl);
-
-        remoteRecords = normalizeRecords(data);
-        renderRemoteRecords();
-
-        showMessage(
-          "classmateMessage",
-          `Successfully loaded ${remoteRecords.length} classmate record(s).`,
-          "success"
-        );
-
-        document.getElementById("totalClassmates").textContent = remoteRecords.length;
-      } catch (error) {
-        remoteRecords = [];
-        renderRemoteRecords();
-
-        showMessage(
-          "classmateMessage",
-          "Could not load classmate records: " + error.message,
-          "error"
-        );
-
-        document.getElementById("totalClassmates").textContent = "—";
-      }
-    }
-
-    function renderRemoteRecords() {
-      const tbody = document.getElementById("classmateList");
-      const query = getValue("searchRemoteRecords").toLowerCase();
-
-      const filtered = remoteRecords.filter(student => {
-        const searchable = [
-          getStudentId(student),
-          getStudentName(student),
-          getProgram(student),
-          getYear(student),
-          getSection(student)
-        ].join(" ").toLowerCase();
-
-        return searchable.includes(query);
+      await requestJSON(url, {
+        method: databaseId ? "PUT" : "POST",
+        body: JSON.stringify(student)
       });
 
-      tbody.replaceChildren();
-      document.getElementById("remoteRecordsCount").textContent =
-        `${filtered.length} record${filtered.length === 1 ? "" : "s"}`;
+      cancelEdit(false);
 
-      if (filtered.length === 0) {
-        const row = tbody.insertRow();
-        const cell = row.insertCell();
-        cell.colSpan = 6;
-        cell.className = "empty-cell";
-        cell.textContent = remoteRecords.length ? "No matching records found." : "No classmate records loaded.";
+      setMessage(
+        "formMessage",
+        databaseId
+          ? "Student updated successfully."
+          : "Student added successfully.",
+        "success"
+      );
+
+      await loadStudents();
+    } catch (error) {
+      setMessage("formMessage", error.message, "error");
+    } finally {
+      button.disabled = false;
+      button.textContent = $("student_id").value
+        ? "Update Student"
+        : "Save Student";
+    }
+  });
+
+  async function deleteStudent(databaseId) {
+    if (!confirm("Are you sure you want to delete this student record?")) {
+      return;
+    }
+
+    try {
+      await requestJSON(
+        `/api/students/${encodeURIComponent(databaseId)}`,
+        { method: "DELETE" }
+      );
+
+      setMessage(
+        "recordsMessage",
+        "Student deleted successfully.",
+        "success"
+      );
+
+      await loadStudents();
+    } catch (error) {
+      setMessage("recordsMessage", error.message, "error");
+    }
+  }
+
+  function normalizeExternalStudent(student) {
+    return {
+      name: student.name ?? student.student_name ??
+        student.full_name ?? student.fullName ?? "",
+      student_id: student.student_id ?? student.studentId ?? student.id ?? "",
+      program: student.program ?? student.course ?? "",
+      year: student.year ?? student.year_level ?? student.yearLevel ?? "",
+      section: student.section ?? ""
+    };
+  }
+
+  async function loadClassmateStudents() {
+    const table = $("classmateTable");
+
+    table.innerHTML =
+      '<tr><td colspan="5" class="empty">Loading classmate records...</td></tr>';
+
+    setMessage("classmateMessage", "");
+
+    try {
+      let data = await requestJSON("/api/classmate-students");
+
+      if (!Array.isArray(data)) {
+        data = data.students ?? data.data ?? data.records ?? [];
+      }
+
+      if (!Array.isArray(data) || data.length === 0) {
+        table.innerHTML =
+          '<tr><td colspan="5" class="empty">' +
+          'No classmate records were returned by the API.' +
+          '</td></tr>';
         return;
       }
 
-      filtered.forEach(student => {
-        const row = tbody.insertRow();
+      table.innerHTML = data.map(raw => {
+        const student = normalizeExternalStudent(raw);
+        const name = String(student.name || "");
 
-        addCell(row, getStudentId(student));
-        addCell(row, getStudentName(student));
-        addCell(row, getProgram(student));
-        addCell(row, getYear(student));
-        addCell(row, getSection(student));
+        return `
+          <tr>
+            <td>
+              <div class="student-cell">
+                <div class="mini-avatar">
+                  ${escapeHTML((name.trim()[0] || "?").toUpperCase())}
+                </div>
+                <div class="student-name">
+                  ${escapeHTML(valueOrDash(name))}
+                </div>
+              </div>
+            </td>
+            <td>${escapeHTML(valueOrDash(student.student_id))}</td>
+            <td>${escapeHTML(valueOrDash(student.program))}</td>
+            <td>${escapeHTML(yearLabel(student.year))}</td>
+            <td>
+              <span class="section-tag">
+                ${escapeHTML(valueOrDash(student.section))}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join("");
 
-        const actionCell = row.insertCell();
-        const viewButton = document.createElement("button");
-        viewButton.className = "btn btn-primary btn-small";
-        viewButton.textContent = "View Details";
-        viewButton.onclick = () => showRemoteDetails(student);
-        actionCell.appendChild(viewButton);
+      setMessage(
+        "classmateMessage",
+        `Loaded ${data.length} classmate record(s).`,
+        "success"
+      );
+    } catch (error) {
+      table.innerHTML =
+        `<tr><td colspan="5" class="empty">` +
+        `${escapeHTML(error.message)}</td></tr>`;
+
+      setMessage(
+        "classmateMessage",
+        "Check that your classmate's API is deployed and available.",
+        "error"
+      );
+    }
+  }
+
+  document.querySelectorAll(".nav a").forEach(link => {
+    link.addEventListener("click", () => {
+      document.querySelectorAll(".nav a").forEach(item => {
+        item.classList.remove("active");
       });
-    }
 
-    document.getElementById("searchRemoteRecords").addEventListener("input", renderRemoteRecords);
-
-    function showRemoteDetails(student) {
-      const box = document.getElementById("remoteDetails");
-      box.style.display = "block";
-
-      const pre = box.querySelector("pre");
-      pre.textContent = JSON.stringify(student, null, 2);
-
-      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-
-    // Load records when the page opens.
-    document.addEventListener("DOMContentLoaded", function() {
-      loadStudents();
-      loadClassmateRecords();
+      link.classList.add("active");
     });
-  </script>
+  });
+
+  loadStudents();
+</script>
 </body>
 </html>
+git add app.py templates/index.html requirements.txt
+git commit -m "Fix student management system"
+git push
