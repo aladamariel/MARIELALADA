@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -570,221 +569,235 @@
       <nav class="nav">
         <a href="#dashboard" class="active">▦ Dashboard</a>
         <a href="#student-info">♙ Student Information</a>
-        <a href="#api-tools">⚡ API Tools</a>
+        <a href="#api-tools">⚙ API Tools</a>
         <a href="#add-student">＋ Add Student</a>
-        <a href="#my-records">☷ My Records</a>
-        <a href="#classmate-records">◎ Classmate Records</a>
+        <a href="#my-records">▤ My Records</a>
+        <a href="#classmate-records">⇄ Classmate Records</a>
       </nav>
     </div>
 
     <div class="sidebar-footer">
       Student Management System<br>
-      Flask · SQLite · REST API
+      Flask API · SQLite Database
     </div>
   </aside>
 
-  <main id="dashboard">
-
+  <main>
     <header class="topbar">
       <div>
-        <div class="eyebrow">OVERVIEW</div>
+        <div class="eyebrow">STUDENT MANAGEMENT</div>
         <h1 class="page-title">Dashboard</h1>
         <p class="subtitle">
-          Manage student information and explore your API tools.
+          Manage student information and connect with other student APIs.
         </p>
       </div>
 
       <div class="profile">
-        <div class="avatar">MA</div>
+        <div class="avatar">S</div>
         <div>
-          <strong>Mariel Alada</strong>
-          <small>BSIT · 3rd Year</small>
+          <strong>Student Administrator</strong>
+          <small>Management Portal</small>
         </div>
       </div>
     </header>
 
-    <section class="stats">
+    <section id="dashboard" class="stats">
       <div class="stat">
         <div>
-          <div class="stat-label">My Student Records</div>
-          <div class="stat-value" id="totalStudents">0</div>
-          <div class="stat-note">Saved in your database</div>
+          <div class="stat-label">Total Students</div>
+          <div class="stat-value" id="totalStudents">—</div>
+          <div class="stat-note">Records in your database</div>
         </div>
         <div class="stat-icon">👥</div>
       </div>
 
       <div class="stat">
         <div>
-          <div class="stat-label">Program</div>
-          <div class="stat-value">BSIT</div>
-          <div class="stat-note">Information Technology</div>
+          <div class="stat-label">API Status</div>
+          <div class="stat-value">Connected</div>
+          <div class="stat-note">Flask student API</div>
         </div>
-        <div class="stat-icon">💻</div>
+        <div class="stat-icon">🔗</div>
       </div>
 
       <div class="stat">
         <div>
-          <div class="stat-label">Attendance</div>
-          <div class="stat-value">95%</div>
-          <div class="stat-note">Sample attendance information</div>
+          <div class="stat-label">Database</div>
+          <div class="stat-value">SQLite</div>
+          <div class="stat-note">Student records storage</div>
         </div>
-        <div class="stat-icon">✓</div>
+        <div class="stat-icon">🗄️</div>
       </div>
     </section>
 
-    <section class="two-columns">
+    <section id="student-info" class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Student Information</h2>
+          <p class="panel-desc">
+            Get the student information from your Flask API.
+          </p>
+        </div>
+        <span class="pill">GET /student</span>
+      </div>
 
-      <article class="panel" id="student-info">
+      <div class="button-row">
+        <button class="btn btn-primary" onclick="loadStudentInfo()">
+          Load Student Information
+        </button>
+      </div>
+
+      <div id="studentInfoResult" class="result-box">
+        Click the button to load student information.
+      </div>
+    </section>
+
+    <section id="api-tools" class="two-columns">
+      <div class="panel">
         <div class="panel-header">
           <div>
-            <h2>Student Information</h2>
-            <p class="panel-desc">
-              View your sample student profile from the API.
-            </p>
+            <h2>Greeting API</h2>
+            <p class="panel-desc">Send a name to the greeting endpoint.</p>
           </div>
-          <span class="pill">GET /student</span>
-        </div>
-
-        <div class="info-grid">
-          <div class="info-item">
-            <span>Student ID</span>
-            <strong id="profileId">2023-0001</strong>
-          </div>
-          <div class="info-item">
-            <span>Full Name</span>
-            <strong id="profileName">Mariel Alada</strong>
-          </div>
-          <div class="info-item">
-            <span>Program</span>
-            <strong id="profileProgram">BSIT</strong>
-          </div>
-          <div class="info-item">
-            <span>Year & Section</span>
-            <strong id="profileYear">3rd Year · A</strong>
-          </div>
-        </div>
-
-        <div class="button-row">
-          <button class="btn btn-primary" onclick="loadProfile()">
-            Refresh Information
-          </button>
-        </div>
-        <div id="profileMessage" class="message"></div>
-      </article>
-
-      <article class="panel" id="api-tools">
-        <div class="panel-header">
-          <div>
-            <h2>API Tools</h2>
-            <p class="panel-desc">
-              Try the Hello and Attendance endpoints.
-            </p>
-          </div>
-          <span class="pill">REST API</span>
+          <span class="pill">GET /hello</span>
         </div>
 
         <div class="field">
-          <label for="helloName">Name for Say Hello</label>
-          <input id="helloName" type="text"
-                 placeholder="Enter a name" value="Mariel">
+          <label for="nameInput">Name</label>
+          <input id="nameInput" type="text" placeholder="Enter your name">
         </div>
 
         <div class="button-row">
-          <button class="btn btn-primary" onclick="sayHello()">
-            Say Hello
-          </button>
-          <button class="btn btn-light" onclick="loadAttendance()">
-            Check Attendance
+          <button class="btn btn-primary" onclick="sayHello()">Say Hello</button>
+        </div>
+
+        <div id="greetingResult" class="result-box">
+          Your greeting will appear here.
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Attendance API</h2>
+            <p class="panel-desc">Retrieve attendance information.</p>
+          </div>
+          <span class="pill">GET /attendance</span>
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-primary" onclick="loadAttendance()">
+            Load Attendance
           </button>
         </div>
 
-        <div class="result-box" id="apiResult">
-          Choose a button to see the API response.
+        <div id="apiResult" class="result-box">
+          Click the button to load attendance.
         </div>
-      </article>
-
+      </div>
     </section>
 
-    <section class="panel" id="add-student">
+    <section id="add-student" class="panel">
       <div class="panel-header">
         <div>
           <h2 id="formTitle">Add Student</h2>
           <p class="panel-desc">
-            Complete all fields to save a student record.
+            Enter the student's information to save it in your database.
           </p>
         </div>
-        <span class="pill">CREATE / UPDATE</span>
+        <span class="pill">Student CRUD</span>
       </div>
 
       <form id="studentForm">
-        <!-- Database row ID for editing. -->
         <input type="hidden" id="student_id">
 
         <div class="form-grid">
           <div class="field">
             <label for="student_id_input">Student ID</label>
-            <input type="text" id="student_id_input"
-                   placeholder="e.g. 2023-0002" required>
+            <input
+              id="student_id_input"
+              type="text"
+              placeholder="Enter student ID"
+              required
+            >
           </div>
 
           <div class="field">
-            <label for="student_name">Student Name</label>
-            <input type="text" id="student_name"
-                   placeholder="Enter full name" required>
+            <label for="student_name">Full Name</label>
+            <input
+              id="student_name"
+              type="text"
+              placeholder="Enter full name"
+              required
+            >
           </div>
 
           <div class="field">
             <label for="program">Program</label>
-            <input type="text" id="program"
-                   placeholder="e.g. BSIT" required>
+            <input
+              id="program"
+              type="text"
+              placeholder="BSIT"
+              required
+            >
           </div>
 
           <div class="field">
             <label for="year">Year Level</label>
             <select id="year" required>
-              <option value="">Select year level</option>
+              <option value="">Select year</option>
               <option value="1">1st Year</option>
               <option value="2">2nd Year</option>
               <option value="3">3rd Year</option>
               <option value="4">4th Year</option>
-              <option value="5">5th Year</option>
             </select>
           </div>
 
           <div class="field">
             <label for="section">Section</label>
-            <input type="text" id="section"
-                   placeholder="e.g. A" required>
+            <input
+              id="section"
+              type="text"
+              placeholder="Enter section"
+              required
+            >
           </div>
         </div>
 
         <div class="button-row">
-          <button type="submit" class="btn btn-primary" id="saveButton">
+          <button id="saveButton" class="btn btn-primary" type="submit">
             Save Student
           </button>
 
-          <button type="button" class="btn btn-light"
-                  id="cancelButton" onclick="cancelEdit()"
-                  style="display:none">
+          <button
+            id="cancelButton"
+            class="btn btn-light"
+            type="button"
+            onclick="cancelEdit()"
+            style="display:none"
+          >
             Cancel Edit
           </button>
         </div>
 
-        <div id="formMessage" class="message"
-             role="status" aria-live="polite"></div>
+        <div id="formMessage" class="message"></div>
       </form>
     </section>
 
-    <section class="panel" id="my-records">
+    <section id="my-records" class="panel">
       <div class="panel-header">
         <div>
           <h2>My Records</h2>
           <p class="panel-desc">
-            View, edit, and delete your saved student records.
+            View, edit, and delete students saved in your database.
           </p>
         </div>
+        <span class="pill">GET /api/students</span>
+      </div>
+
+      <div class="button-row">
         <button class="btn btn-light" onclick="loadStudents()">
-          ↻ Refresh
+          Refresh Records
         </button>
       </div>
 
@@ -811,20 +824,20 @@
       <div id="recordsMessage" class="message"></div>
     </section>
 
-    <section class="panel" id="classmate-records">
+    <section id="classmate-records" class="panel">
       <div class="panel-header">
         <div>
-          <h2>Classmate Records</h2>
+          <h2>Classmate's Records</h2>
           <p class="panel-desc">
-            Fetch records from your classmate's deployed API.
+            Load student records from your classmate's deployed API
+            and save them into your database.
           </p>
         </div>
-        <span class="pill">EXTERNAL API</span>
+        <span class="pill">API Integration</span>
       </div>
 
-      <div class="button-row" style="margin-top:0;margin-bottom:15px">
-        <button class="btn btn-primary"
-                onclick="loadClassmateStudents()">
+      <div class="button-row">
+        <button class="btn btn-primary" onclick="loadClassmateStudents()">
           Load Classmate Records
         </button>
       </div>
@@ -838,12 +851,13 @@
               <th>Program</th>
               <th>Year</th>
               <th>Section</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody id="classmateTable">
             <tr>
-              <td colspan="5" class="empty">
-                Click “Load Classmate Records” to fetch data.
+              <td colspan="6" class="empty">
+                Click Load Classmate Records to retrieve data.
               </td>
             </tr>
           </tbody>
@@ -853,10 +867,9 @@
       <div id="classmateMessage" class="message"></div>
     </section>
 
-    <div class="footer">
-      Student Management System · Built with Flask and SQLite
-    </div>
-
+    <footer class="footer">
+      Student Management System · Flask API · SQLite
+    </footer>
   </main>
 </div>
 
@@ -865,49 +878,39 @@
 
   async function requestJSON(url, options = {}) {
     const response = await fetch(url, {
-      ...options,
       headers: {
         "Content-Type": "application/json",
         ...(options.headers || {})
-      }
+      },
+      ...options
     });
+
+    const text = await response.text();
 
     let data = {};
 
     try {
-      data = await response.json();
-    } catch (error) {
-      data = {};
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = { message: text };
     }
 
     if (!response.ok) {
-      const missing = Array.isArray(data.fields)
-        ? " (missing: " + data.fields.join(", ") + ")"
-        : "";
-
       throw new Error(
-        (data.message || data.error ||
-        `Request failed (${response.status})`) + missing
+        data.error || data.message || `Request failed: ${response.status}`
       );
     }
 
     return data;
   }
 
-  function setMessage(id, message, type = "") {
-    const element = $(id);
-    element.textContent = message || "";
-    element.className = "message" + (type ? " " + type : "");
-  }
-
   function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, character => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[character]);
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   function valueOrDash(value) {
@@ -917,16 +920,15 @@
   }
 
   function getDatabaseId(student) {
-    return student.id ?? student.database_id ?? "";
+    return student.id ?? student.database_id ?? student.student_db_id ?? "";
+  }
+
+  function getStudentName(student) {
+    return student.name ?? student.student_name ?? student.full_name ?? "";
   }
 
   function getStudentCode(student) {
     return student.student_id ?? student.studentId ?? "";
-  }
-
-  function getStudentName(student) {
-    return student.name ?? student.student_name ??
-      student.full_name ?? student.fullName ?? "";
   }
 
   function getProgram(student) {
@@ -934,60 +936,73 @@
   }
 
   function getYear(student) {
-    return student.year ?? student.year_level ??
-      student.yearLevel ?? "";
+    return student.year ?? student.year_level ?? student.yearLevel ?? "";
   }
 
   function getSection(student) {
     return student.section ?? "";
   }
 
-  function yearLabel(value) {
-    const labels = {
-      1: "1st Year",
-      2: "2nd Year",
-      3: "3rd Year",
-      4: "4th Year",
-      5: "5th Year"
-    };
+  function yearLabel(year) {
+    if (!year) return "—";
 
-    return labels[Number(value)] || valueOrDash(value);
+    const value = String(year);
+
+    if (value === "1") return "1st Year";
+    if (value === "2") return "2nd Year";
+    if (value === "3") return "3rd Year";
+    if (value === "4") return "4th Year";
+
+    return value;
   }
 
-  async function loadProfile() {
-    setMessage("profileMessage", "Loading...");
+  function setMessage(elementId, message, type = "") {
+    const element = $(elementId);
+
+    element.textContent = message;
+    element.className = "message";
+
+    if (type) {
+      element.classList.add(type);
+    }
+  }
+
+  async function loadStudentInfo() {
+    $("studentInfoResult").textContent = "Loading student information...";
 
     try {
-      const student = await requestJSON("/student");
+      const data = await requestJSON("/student");
 
-      $("profileId").textContent = valueOrDash(student.student_id);
-      $("profileName").textContent = valueOrDash(student.name);
-      $("profileProgram").textContent = valueOrDash(student.program);
-      $("profileYear").textContent =
-        `${yearLabel(student.year)} · ${valueOrDash(student.section)}`;
-
-      setMessage(
-        "profileMessage",
-        "Student information loaded successfully.",
-        "success"
-      );
+      $("studentInfoResult").textContent =
+        `Student ID: ${data.student_id ?? "—"}\n` +
+        `Name: ${data.name ?? "—"}\n` +
+        `Program: ${data.program ?? "—"}\n` +
+        `Year: ${data.year ?? "—"}\n` +
+        `Section: ${data.section ?? "—"}`;
     } catch (error) {
-      setMessage("profileMessage", error.message, "error");
+      $("studentInfoResult").textContent = error.message;
     }
   }
 
   async function sayHello() {
-    const name = $("helloName").value.trim() || "Student";
-    $("apiResult").textContent = "Sending request...";
+    const name = $("nameInput").value.trim();
+
+    if (!name) {
+      $("greetingResult").textContent = "Please enter your name.";
+      return;
+    }
+
+    $("greetingResult").textContent = "Loading greeting...";
 
     try {
       const data = await requestJSON(
-        "/hello?name=" + encodeURIComponent(name)
+        `/hello?name=${encodeURIComponent(name)}`
       );
 
-      $("apiResult").textContent = data.message || JSON.stringify(data);
+      $("greetingResult").textContent =
+        data.message || JSON.stringify(data);
     } catch (error) {
-      $("apiResult").textContent = error.message;
+      $("greetingResult").textContent = error.message;
     }
   }
 
@@ -1082,7 +1097,6 @@
         throw new Error("Student record not found. Refresh and try again.");
       }
 
-      // Keep database ID separate from the student's school ID.
       $("student_id").value = getDatabaseId(student);
       $("student_id_input").value = getStudentCode(student);
       $("student_name").value = getStudentName(student);
@@ -1125,7 +1139,6 @@
 
     const databaseId = $("student_id").value.trim();
 
-    // These names must match the Flask backend.
     const student = {
       student_id: $("student_id_input").value.trim(),
       name: $("student_name").value.trim(),
@@ -1222,7 +1235,7 @@
     const table = $("classmateTable");
 
     table.innerHTML =
-      '<tr><td colspan="5" class="empty">Loading classmate records...</td></tr>';
+      '<tr><td colspan="6" class="empty">Loading classmate records...</td></tr>';
 
     setMessage("classmateMessage", "");
 
@@ -1235,7 +1248,7 @@
 
       if (!Array.isArray(data) || data.length === 0) {
         table.innerHTML =
-          '<tr><td colspan="5" class="empty">' +
+          '<tr><td colspan="6" class="empty">' +
           'No classmate records were returned by the API.' +
           '</td></tr>';
         return;
@@ -1265,6 +1278,12 @@
                 ${escapeHTML(valueOrDash(student.section))}
               </span>
             </td>
+            <td>
+              <button class="btn btn-primary btn-small"
+                onclick='saveClassmateRecord(${JSON.stringify(student).replace(/'/g, "\\'")})'>
+                Save to My Database
+              </button>
+            </td>
           </tr>
         `;
       }).join("");
@@ -1276,7 +1295,7 @@
       );
     } catch (error) {
       table.innerHTML =
-        `<tr><td colspan="5" class="empty">` +
+        `<tr><td colspan="6" class="empty">` +
         `${escapeHTML(error.message)}</td></tr>`;
 
       setMessage(
@@ -1284,6 +1303,25 @@
         "Check that your classmate's API is deployed and available.",
         "error"
       );
+    }
+  }
+
+  async function saveClassmateRecord(student) {
+    try {
+      const result = await requestJSON("/import-student", {
+        method: "POST",
+        body: JSON.stringify(student)
+      });
+
+      setMessage(
+        "classmateMessage",
+        result.message || "Partner record saved to your database.",
+        "success"
+      );
+
+      await loadStudents();
+    } catch (error) {
+      setMessage("classmateMessage", error.message, "error");
     }
   }
 
